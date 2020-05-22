@@ -1,18 +1,31 @@
-#! python3
-#https://www.youtube.com/channel/UCsZs-p37pse_4UXG-alR47w   (My channel where I explain this code and demonstrate it working)
-# clipboardToTxt.py - Pastes what you copy into a text file
-import time
+# Based on https://github.com/bolapara/clipboardToTxt and modified
+
+
+from datetime import date,datetime
+import sys
 import pyperclip
-from contextlib import redirect_stdout
-clipboard = ''
-while 1 != 2:
-    time.sleep(.1) #with this checks ~10 times a second, without it checks ~600 times a second
-    if clipboard != pyperclip.paste():
-        clipboard = pyperclip.paste()
-        with open('clipboard.txt', 'a') as f:
-            with redirect_stdout(f):
-                print(clipboard + '\n')
 
+today = date.today()
+today_date = today.strftime("%b-%d-%Y")
 
+copied = pyperclip.paste()
+flag = 0
 
-
+while True:
+    if flag == 1:
+        print("Copied and Pasted")
+        flag = 0
+    paste = pyperclip.paste()
+    if paste != copied:
+        now = datetime.now()
+        try:
+            time = datetime.now()
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+            filename = str(today_date) +".txt"
+            with open(filename, 'a') as f:
+                f.write('{}\n-----------------------\n{}\n$\n'.format(dt_string,paste))
+                copied = paste
+                flag = 1
+        except Exception as e:
+            sys.stderr.write("Error: {}".format(e))
+            break
