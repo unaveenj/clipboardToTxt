@@ -1,4 +1,4 @@
-# clipboardToTxt.py
+
 # Clipboard manager python script
 
 -Based on https://github.com/bolapara/clipboardToTxt and modified
